@@ -217,12 +217,12 @@ def visualize(
 if __name__ == "__main__":
 
     t_initial = 0.0
-    t_final = 5.0
-    x, dx = np.linspace(start=-1.5, stop=+1.5, num=2000, retstep=True)
+    t_final = 10.0
+    x, dx = np.linspace(start=-2.0, stop=+2.0, num=2000, retstep=True)
     u_initial = pyramid(x)
     num_frames = 100
     filename = "burgers.gif"
-    suptitle = "Inviscid Burgers w/ Periodic BC: t = {:.2f}"
+    suptitle = "Inviscid Burgers on cyclic domain: t = {:.2f}"
 
     print("Propagating...")
     results: OdeSolution = propagate(
