@@ -1,0 +1,22 @@
+package-mode = false
+
+[tool.poetry]
+name = "burgers"
+version = "0.1.0"
+description = ""
+authors = ["Jon Pearce <jonpea@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+matplotlib = "^3.9.2"
+numpy = "^2.1.1"
+scipy = "^1.14.1"
+ipython = "^8.27.0"
+pytest = "^8.3.3"
+tqdm = "^4.66.5"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
