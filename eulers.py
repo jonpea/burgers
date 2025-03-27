@@ -1,5 +1,5 @@
 """
-Solution of the inviscid Burgers equation on a cyclic domain.
+Solution of the Euler equation with variable cross-section.
 
 Acknowledgements:
 * Thanks to Matthew Clay for the clear comments on the minmod slope limiter:
@@ -23,19 +23,36 @@ OdeSolution: TypeAlias = scipy.integrate._ivp.common.OdeSolution
 
 
 @dataclasses.dataclass(frozen=True, slots=True)
-class Burgers:
+class Eulers:
     """
     A callable representing the ODE right-hand side of the
     inviscid Burgers' equation on a cyclic/periodic uniform grid.
     """
 
-    x: Array  # points at control volume centers
+    x: Array  # points at cell faces
     dx: float  # grid spacing
 
+    @property
+    def num_faces(self) -> int:
+        return len(self.x)
+
+    @property
+    def num_cells(self) -> int:
+        return self.num_faces - 1
+
+    def unpack(self, y: Array) -> tuple[Array, ...]:
+        """Extracts cell-wise conservation variables from flat array."""
+        return tuple(y.reshape((self.num_cells, -1)))
+
     @staticmethod
-    def flux(u: Array) -> Array:
+    def pack(*w1: Array) -> Array:
+        """Pack conservation variables into flat array."""
+        return np.column_stack((w1, w2, w3))
+
+    @staticmethod
+    def flux(w1: Array, w2: Array, w3: Array) -> Array:
         """Burgers flux F(u) in d/dt u + d/dx F(u) = 0."""
-        return 0.5 * u**2
+        return
 
     @staticmethod
     def reconstruct_at_faces(u: Array) -> tuple[Array, Array]:
@@ -211,7 +228,7 @@ def visualize(
             interval=1000.0 / animation_fps,  # milliseconds
         )
 
-        animation_.save(filename=filename, writer="pillow", fps=animation_fps)
+    animation_.save(filename=filename, writer="pillow", fps=animation_fps)
 
 
 if __name__ == "__main__":
